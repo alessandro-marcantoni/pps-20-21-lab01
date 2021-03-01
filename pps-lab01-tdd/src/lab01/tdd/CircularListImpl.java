@@ -29,7 +29,7 @@ public class CircularListImpl implements CircularList {
     public Optional<Integer> next() {
         return this.isEmpty()
                 ? Optional.empty()
-                : Optional.of(this.circularList.get(this.index));
+                : Optional.of(this.circularList.get(this.getIndexAndUpdateIt()));
     }
 
     @Override
@@ -45,5 +45,11 @@ public class CircularListImpl implements CircularList {
     @Override
     public Optional<Integer> next(SelectStrategy strategy) {
         return Optional.empty();
+    }
+
+    private int getIndexAndUpdateIt() {
+        final int currentIndex = this.index;
+        this.index = (this.index + 1) % this.size();
+        return currentIndex;
     }
 }

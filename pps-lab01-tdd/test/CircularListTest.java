@@ -46,10 +46,20 @@ public class CircularListTest {
     }
 
     @Test
-    void nextInNotEmptyList() {
+    void nextInListWithOneElement() {
         this.circularList.add(1);
         final Optional<Integer> next = this.circularList.next();
         assertEquals(1, next.get());
+    }
+
+    @Test
+    void nextInListWithMoreThanOneElement() {
+        this.circularList.add(1);
+        this.circularList.add(2);
+        Optional<Integer> next = this.circularList.next();
+        assertEquals(1, next.get());
+        next = this.circularList.next();
+        assertEquals(2, next.get());
     }
 
 }
