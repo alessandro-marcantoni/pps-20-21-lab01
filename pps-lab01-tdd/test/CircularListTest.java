@@ -3,6 +3,8 @@ import lab01.tdd.CircularListImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -28,6 +30,26 @@ public class CircularListTest {
         this.circularList.add(1);
         assertFalse(this.circularList.isEmpty());
         assertEquals(1, this.circularList.size());
+    }
+
+    @Test
+    void addMoreThanOneElement() {
+        this.addElement();
+        this.circularList.add(1);
+        assertEquals(2, this.circularList.size());
+    }
+
+    @Test
+    void nextInEmptyList() {
+        final Optional<Integer> next = this.circularList.next();
+        assertEquals(Optional.empty(), next);
+    }
+
+    @Test
+    void nextInNotEmptyList() {
+        this.circularList.add(1);
+        final Optional<Integer> next = this.circularList.next();
+        assertEquals(1, next.get());
     }
 
 }

@@ -1,12 +1,14 @@
 package lab01.tdd;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 public class CircularListImpl implements CircularList {
 
     private final List<Integer> circularList = new ArrayList<>();
+    private int index = 0;
 
     @Override
     public void add(final int element) {
@@ -25,7 +27,9 @@ public class CircularListImpl implements CircularList {
 
     @Override
     public Optional<Integer> next() {
-        return Optional.empty();
+        return this.isEmpty()
+                ? Optional.empty()
+                : Optional.of(this.circularList.get(this.index));
     }
 
     @Override
