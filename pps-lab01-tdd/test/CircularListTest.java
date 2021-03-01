@@ -62,4 +62,11 @@ public class CircularListTest {
         assertEquals(2, next.get());
     }
 
+    @Test
+    void nextCircularBehaviour() {
+        this.nextInListWithMoreThanOneElement();
+        Optional<Integer> next = this.circularList.next();
+        assertEquals(1, next.get());
+    }
+
 }
