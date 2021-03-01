@@ -9,13 +9,13 @@ public class CircularListImpl implements CircularList {
     private final List<Integer> circularList = new ArrayList<>();
 
     @Override
-    public void add(int element) {
-
+    public void add(final int element) {
+        this.circularList.add(element);
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.circularList.size();
     }
 
     @Override
