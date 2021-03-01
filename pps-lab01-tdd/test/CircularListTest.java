@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CircularListTest {
 
-    private static final int NUM_ELEMENTS = 3;
+    private static final int NUM_ELEMENTS = 10;
+    private static final int MAX_OPERATIONS = 100;
 
     CircularList circularList;
 
@@ -57,10 +59,8 @@ public class CircularListTest {
 
     @Test
     void nextInListWithMoreThanOneElement() {
-        this.addMoreElements();
-        IntStream.range(0, NUM_ELEMENTS).boxed().forEach(i -> {
-            assertEquals(i, this.circularList.next().get());
-        });
+        this.addElementsToList();
+        IntStream.range(0, NUM_ELEMENTS).boxed().forEach(i -> assertEquals(i, this.circularList.next().get()));
     }
 
     @Test
@@ -93,13 +93,37 @@ public class CircularListTest {
 
     @Test
     void prevInListWithMoreThanOneElement() {
-        this.addMoreElements();
-        IntStream.range(0, NUM_ELEMENTS).boxed().map(i -> -i).sorted().map(i -> -i).forEach(i -> {
-            assertEquals(i, this.circularList.previous().get());
-        });
+        this.addElementsToList();
+        IntStream.range(0, NUM_ELEMENTS)
+                .boxed().map(i -> -i).sorted().map(i -> -i)
+                .forEach(i -> assertEquals(i, this.circularList.previous().get()));
     }
 
-    private void addMoreElements() {
+    @Test
+    void resetBeforeNextOperations() {
+        this.addElementsToList();
+        this.circularList.reset();
+        this.nextInListWithMoreThanOneElement();
+    }
+
+    @Test
+    void resetBeforePrevOperations() {
+        this.addElementsToList();
+        this.circularList.reset();
+        this.prevInListWithMoreThanOneElement();
+    }
+
+    @Test
+    void resetAfterRandomOperations() {
+        this.addElementsToList();
+        IntStream.range(0, new Random().nextInt() % MAX_OPERATIONS).boxed().forEach(i -> this.circularList.next());
+        IntStream.range(0, new Random().nextInt() % MAX_OPERATIONS).boxed().forEach(i -> this.circularList.previous());
+        this.circularList.reset();
+        this.nextInListWithMoreThanOneElement();
+    }
+
+
+    private void addElementsToList() {
         IntStream.range(0, NUM_ELEMENTS).forEach(this.circularList::add);
     }
 
