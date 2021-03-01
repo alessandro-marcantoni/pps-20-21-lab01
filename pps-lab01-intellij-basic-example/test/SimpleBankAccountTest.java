@@ -16,12 +16,11 @@ class SimpleBankAccountTest {
     protected static final double INITIAL_BALANCE = 0;
     protected static final double DEPOSIT_AMOUNT = 100;
 
-    private final double FEE = 0.0;
     protected AccountHolder accountHolder;
     protected BankAccount bankAccount;
 
     protected double getFee() {
-        return this.FEE;
+        return SimpleBankAccount.FEE;
     }
 
     @BeforeEach

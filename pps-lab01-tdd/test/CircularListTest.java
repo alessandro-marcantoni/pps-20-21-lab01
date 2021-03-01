@@ -1,18 +1,27 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
+import lab01.tdd.CircularList;
+import lab01.tdd.CircularListImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The test suite for testing the CircularList implementation
  */
 public class CircularListTest {
 
-    //TODO: test implementation
+    CircularList circularList;
 
-    @Disabled
+    @BeforeEach
+    void beforeEach() {
+        this.circularList = new CircularListImpl();
+    }
+
     @Test
-    public void testTodo() {
-        Assertions.fail();
+    void initiallyEmpty() {
+        assertTrue(this.circularList.isEmpty());
+        assertEquals(0, this.circularList.size());
     }
 
 }
