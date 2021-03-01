@@ -1,11 +1,13 @@
 package lab01.tdd;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 public class CircularListImpl implements CircularList {
+
+    private static final int NEXT = +1;
+    private static final int PREV = -1;
 
     private final List<Integer> circularList = new ArrayList<>();
     private int index = 0;
@@ -29,12 +31,14 @@ public class CircularListImpl implements CircularList {
     public Optional<Integer> next() {
         return this.isEmpty()
                 ? Optional.empty()
-                : Optional.of(this.circularList.get(this.getIndexAndUpdateIt()));
+                : Optional.of(this.circularList.get(this.updatedIndex(NEXT)));
     }
 
     @Override
     public Optional<Integer> previous() {
-        return Optional.empty();
+        return this.isEmpty()
+                ? Optional.empty()
+                : Optional.of(this.circularList.get(this.updatedIndex(PREV)));
     }
 
     @Override
@@ -47,9 +51,9 @@ public class CircularListImpl implements CircularList {
         return Optional.empty();
     }
 
-    private int getIndexAndUpdateIt() {
+    private int updatedIndex(final int operation) {
         final int currentIndex = this.index;
-        this.index = (this.index + 1) % this.size();
-        return currentIndex;
+        this.index = (this.index + operation + this.size()) % this.size();
+        return operation == NEXT ? currentIndex : this.index;
     }
 }

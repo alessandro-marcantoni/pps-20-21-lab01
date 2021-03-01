@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * The test suite for testing the CircularList implementation
  */
 public class CircularListTest {
+
+    private static final int NUM_ELEMENTS = 3;
 
     CircularList circularList;
 
@@ -54,19 +57,50 @@ public class CircularListTest {
 
     @Test
     void nextInListWithMoreThanOneElement() {
-        this.circularList.add(1);
-        this.circularList.add(2);
-        Optional<Integer> next = this.circularList.next();
-        assertEquals(1, next.get());
-        next = this.circularList.next();
-        assertEquals(2, next.get());
+        this.addMoreElements();
+        IntStream.range(0, NUM_ELEMENTS).boxed().forEach(i -> {
+            assertEquals(i, this.circularList.next().get());
+        });
     }
 
     @Test
     void nextCircularBehaviour() {
         this.nextInListWithMoreThanOneElement();
         Optional<Integer> next = this.circularList.next();
-        assertEquals(1, next.get());
+        assertEquals(0, next.get());
+    }
+
+    @Test
+    void prevInEmptyList() {
+        final Optional<Integer> prev = this.circularList.previous();
+        assertEquals(Optional.empty(), prev);
+    }
+
+    @Test
+    void prevCircularBehaviour() {
+        this.circularList.add(1);
+        this.circularList.add(2);
+        Optional<Integer> prev = this.circularList.previous();
+        assertEquals(2, prev.get());
+    }
+
+    @Test
+    void prevInListWithOneElement() {
+        this.circularList.add(1);
+        final Optional<Integer> prev = this.circularList.previous();
+        assertEquals(1, prev.get());
+    }
+
+    @Test
+    void prevInListWithMoreThanOneElement() {
+        this.addMoreElements();
+        IntStream.range(0, NUM_ELEMENTS).boxed().map(i -> -i).sorted().map(i -> -i).forEach(i -> {
+            assertEquals(i, this.circularList.previous().get());
+        });
+    }
+
+    private void addMoreElements() {
+        IntStream.range(0, NUM_ELEMENTS).forEach(this.circularList::add);
     }
 
 }
