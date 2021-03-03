@@ -122,6 +122,17 @@ public class CircularListTest {
         this.nextInListWithMoreThanOneElement();
     }
 
+    @Test
+    void nextWithStrategyEquals() {
+        this.addElementsToList();
+        assertEquals(Optional.of(5), this.circularList.next(i -> i == 5));
+    }
+
+    @Test
+    void nextWithStrategyOddGreaterThan() {
+        this.addElementsToList();
+        assertEquals(Optional.of(7), this.circularList.next(i -> i % 2 == 1 && i > 5));
+    }
 
     private void addElementsToList() {
         IntStream.range(0, NUM_ELEMENTS).forEach(this.circularList::add);
