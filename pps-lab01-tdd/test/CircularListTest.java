@@ -1,5 +1,7 @@
 import lab01.tdd.CircularList;
 import lab01.tdd.CircularListImpl;
+import lab01.tdd.StrategyFactory;
+import lab01.tdd.StrategyFactoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,7 @@ public class CircularListTest {
     private static final int MAX_OPERATIONS = 100;
 
     CircularList circularList;
+    StrategyFactory strategyFactory = new StrategyFactoryImpl();
 
     @BeforeEach
     void beforeEach() {
@@ -125,13 +128,23 @@ public class CircularListTest {
     @Test
     void nextWithStrategyEquals() {
         this.addElementsToList();
-        assertEquals(Optional.of(5), this.circularList.next(i -> i == 5));
+        assertEquals(Optional.of(5), this.circularList.next(strategyFactory.equalStrategy(5)));
     }
 
     @Test
-    void nextWithStrategyOddGreaterThan() {
+    void nextWithStrategyOdd() {
         this.addElementsToList();
-        assertEquals(Optional.of(7), this.circularList.next(i -> i % 2 == 1 && i > 5));
+        assertEquals(Optional.of(1), this.circularList.next(strategyFactory.oddStrategy()));
+    }
+
+    @Test
+    void nextWithStrategyOddMultipleOfGreaterThan() {
+        this.addElementsToList();
+        assertEquals(Optional.of(6), this.circularList.next(strategyFactory.composeStrategy(
+                strategyFactory.evenStrategy(),
+                strategyFactory.multipleOfStrategy(3),
+                strategyFactory.greaterThan(0)
+        )));
     }
 
     private void addElementsToList() {
